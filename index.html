@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-VMKM1ETSCC"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-VMKM1ETSCC');
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Activities Recommender</title>
+
+    <!--<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD13vQ5AjArju70Ri2x1bDIspqzm5hkDs4&libraries=places&callback=initMap"></script>-->
+    <script src="https://apis.google.com/js/platform.js" async defer></script> <!--code line from Shermin-->
+<!--I added the above line-->
+</head>
+<body>
+    <header>
+        <h1>Activities near me</h1>
+    </header>
+
+    <section id="inputSection">
+        <div id="locationInput">
+            <label for="location">Location:</label>
+            <input type="text" id="location" placeholder="Enter location, we will search randomly if its blank.">
+        </div>
+        
+        <div id="preferenceInput">
+            <label for="preference">Preference:</label>
+            <input type="text" id="preference" placeholder="Enter preference, we will search randomly if its blank.">
+        </div>
+
+        <div id="buttons">
+            <button id="clearButton" onclick="clearInputs()">Clear</button>
+            <button id="submitButton" onclick="submitForm()">Submit</button>
+        </div>
+    </section>
+
+    <section id="recommendationSection">
+        <h2>Recommendation:</h2>
+        <p id="recommendationText"></p>
+    </section>
+    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script> <!--may not be use-->
+    <script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js'></script><!--may not be use-->
+    <script src="index.js"></script>
+</body>
+</html>

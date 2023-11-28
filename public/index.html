@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-VMKM1ETSCC"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-VMKM1ETSCC');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Activities Recommender</title>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <!-- Axios -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <!-- Google Maps API -->
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+</head>
+<body>
+    <header>
+        <h1>Activities Recommender</h1>
+    </header>
+
+    <section id="inputSection">
+        <div id="locationInput">
+            <label for="location">Location:</label>
+            <input type="text" id="location" placeholder="Indicate a location or enjoy a surprise search.">
+        </div>
+        
+        <div id="preferenceInput">
+            <label for="preference">Preference:</label>
+            <input type="text" id="preference" placeholder="Share your preference or enjoy a surprise search.">
+        </div>
+
+        <div id="buttons">
+            <button id="clearButton" onclick="clearInputs()">Clear</button>
+            <button id="submitButton">Submit</button>
+        </div>
+    </section>
+
+    <section id="recommendationSection">
+        <!--<h2>Recommendation:</h2>-->
+        <p id="recommendationText"></p>
+    </section>
+
+    <script>
+        const activitiesList = [
+            'Shopping', 'Swimming', 'Dancing', 'Cycling', 'Hiking',
+            'Museum visit', 'Movie night', 'Coffee tasting', 'Art gallery tour',
+            'Beach picnic', 'Yoga session', 'Food tasting', 'Escape room',
+            'Karaoke night', 'Bowling', 'Photography walk', 'Concert', 'Book club meeting',
+            'Crafting workshop'
+        ];
+
+        function getRandomActivityInSingapore(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function clearInputs() {
+            $('#location').val('');//.val('') is used with form elements, such as input fields, text areas, and select boxes. It sets the "value" property of the form element to the specified string or an empty string. It's suitable for input fields where you want to manipulate the user-inputted value.
+            $('#preference').val('');
+            $('#recommendationText').text(''); //.text('') is used with non-form elements, like <div>, <p>, <span>, etc. It sets the text content of the selected element to the specified string or an empty string. It's suitable for elements that contain plain text and don't have a "value" property like form elements.
+        }
+
+        $('#submitButton').click(function () {
+            const location = $('#location').val().trim() || 'Singapore';//Default to Singapre if no location input is provided
+            const preference = $('#preference').val();
+            const query = preference ? `${preference} near ${location}` : `${getRandomActivityInSingapore(activitiesList)} near ${location}`;//query based on the value of the variable preference. query string ${xxx}based on whether the user has provided a preference (preference is true) or not (preference is false). 
+            displayRecommendation(query);
+        });
+
+        async function displayRecommendation(query) {
+            try {
+                const response = await axios.get(`/places?query=${query}`);
+                const places = response.data;
+
+                if (places.length > 0) {
+                    const firstPlace = places[0];
+                    const recommendation = `<strong>Recommendation for ${query}</strong><br><br>Place: ${firstPlace.name}<br>Address: ${firstPlace.formatted_address}`;
+                    //const recommendation = `<strong>Recommendation for ${query}</strong>\n\n Place: ${firstPlace.name}\nAddress: ${firstPlace.formatted_address}`;
+
+                    //$('#recommendationText').text(recommendation);
+                    document.getElementById('recommendationText').innerHTML = recommendation;//Update/sets the HTML content of the element with the ID 'recommendationText' to the value stored in the recommendation variable. 
+                } else {
+                    $('#recommendationText').text('No places found for the given query.');
+                }
+            } catch (error) {
+                console.error('Error fetching data from the Google Places API', error);
+                $('#recommendationText').text('Error fetching data from the Google Places API.');
+            }
+        }
+    </script>
+
+    <!--<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>-->
+    <!--<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js'></script>-->
+    <!--<script src="index.js"></script>-->
+</body>
+</html>

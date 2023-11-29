@@ -70,7 +70,7 @@
         }
 
         $('#submitButton').click(function () {
-            const location = $('#location').val().trim() + ' in Singapore' || 'a interesting place in Singapore';//Default to Singapre if no location input is provided
+            const location = $('#location').val().trim() + ' a place in Singapore';// || 'a interesting place in Singapore';//Default to Singapre if no location input is provided
             const preference = $('#preference').val();
             const query = preference ? `${preference} near ${location}.` : `${getRandomActivityInSingapore(activitiesList)} near ${location}.`;//query based on the value of the variable preference. query string ${xxx}based on whether the user has provided a preference (preference is true) or not (preference is false). 
             displayRecommendation(query);
